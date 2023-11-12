@@ -1,13 +1,15 @@
 package providers;
 
-public class InstaPayProvider extends Provider{
+public class InstaPayProvider implements Provider{
     @Override
     public boolean transfer() {
+
         return false;
     }
 
     @Override
     public boolean verify() {
+
         return false;
     }
 
