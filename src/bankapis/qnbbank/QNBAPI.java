@@ -1,56 +1,88 @@
 package bankapis.qnbbank;
 
+import bankapis.BankAPI;
+import bankapis.BankAccount;
+import bankapis.BankDTO;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import transfering.BankTransferService;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/qnb/bank-accounts")
-public class QNBAPI {
-    private final List<QNBAccount> bankAccounts = new ArrayList<>();
+public class QNBAPI implements BankAPI {
+    private final List<BankAccount> bankAccounts = new ArrayList<>();
 
     public QNBAPI() {
         // Populate the in-memory database with some sample data
-        bankAccounts.add(new QNBAccount(1, "John Doe", 1000.0));
-        bankAccounts.add(new QNBAccount(2, "Jane Smith", 2500.0));
+        bankAccounts.add(new BankAccount("1", "John Doe", 1000.0, "12334"));
+        bankAccounts.add(new BankAccount("2", "Jane Smith", 2500.0, "11335"));
     }
 
-    @GetMapping
-    public List<QNBAccount> getAllBankAccounts() {
-        return bankAccounts;
+    @PostMapping("/transfer-to")
+    public ResponseEntity<String> transferTo(@RequestParam String targetApiUrl, @RequestParam String  sourceAccountId, @RequestParam String targetAccountId, @RequestParam double amount) {
+        BankAccount sourceAccount = getAccountById(sourceAccountId);
+        if (sourceAccount == null || sourceAccount.getBalance() < amount) {
+            return ResponseEntity.badRequest().body("Invalid source account or insufficient balance");
+        }
+
+        BankTransferService.transferBetweenBanks(getApiUrl(), targetApiUrl, sourceAccountId, targetAccountId, amount);
+
+        return ResponseEntity.ok("Balance transferred successfully");
+    }
+
+    @PutMapping("/{accountId}/deposit")
+    public ResponseEntity<String> deposit(@PathVariable String accountId, @RequestParam double amount) {
+        BankAccount account = getAccountById(accountId);
+        if (account != null) {
+            account.deposit(amount);
+            return ResponseEntity.ok("Deposit successful");
+        }
+        return ResponseEntity.badRequest().body("Invalid account");
+    }
+    @PutMapping("/{accountId}/withdraw")
+    public ResponseEntity<String> withdraw(@PathVariable String  accountId, @RequestParam double amount) {
+        BankAccount account = getAccountById(accountId);
+        if (account != null && account.getBalance() >= amount) {
+            account.withdraw(amount);
+            return ResponseEntity.ok("Withdrawal successful");
+        }
+        return ResponseEntity.badRequest().body("Invalid account or insufficient balance");
     }
 
     @GetMapping("/{accountId}")
-    public QNBAccount getBankAccount(@PathVariable int accountId) {
-        for (QNBAccount account : bankAccounts) {
-            if (account.getAccountId() == accountId) {
+    public BankDTO getBankAccount(@PathVariable String accountId) {
+        for (BankAccount account : bankAccounts) {
+            if (account.getAccountId().equals(accountId)) {
+                return new BankDTO(account.getAccountId(), account.getPhone());
+            }
+        }
+        return null;
+    }
+
+    @GetMapping("/{accountId}/balance")
+    public double getBalance(@PathVariable String accountId) {
+        for (BankAccount account : bankAccounts) {
+            if (account.getAccountId().equals(accountId)) {
+                return account.getBalance();
+            }
+        }
+        return Double.NaN; // Return null or handle not found scenarios as needed
+    }
+
+    public String getApiUrl() {
+        return "http://localhost:8001/api/qnb/bank-accounts";
+    }
+
+    public BankAccount getAccountById(String accountId) {
+        for (BankAccount account : bankAccounts) {
+            if (account.getAccountId().equals(accountId)) {
                 return account;
             }
         }
-        return null; // Return null or handle not found scenarios as needed
+        return null;
     }
 
-    @PostMapping
-    public QNBAccount createBankAccount(@RequestBody QNBAccount bankAccount) {
-        bankAccounts.add(bankAccount);
-        return bankAccount;
-    }
-
-    @PutMapping("/{accountId}")
-    public QNBAccount updateBankAccount(@PathVariable int accountId, @RequestBody QNBAccount updatedAccount) {
-        for (QNBAccount account : bankAccounts) {
-            if (account.getAccountId() == accountId) {
-                account.setAccountHolder(updatedAccount.getAccountHolder());
-                account.setBalance(updatedAccount.getBalance());
-                return account;
-            }
-        }
-        return null; // Handle not found scenarios as needed
-    }
-
-    @DeleteMapping("/{accountId}")
-    public void deleteBankAccount(@PathVariable int accountId) {
-        bankAccounts.removeIf(account -> account.getAccountId() == accountId);
-    }
 }
