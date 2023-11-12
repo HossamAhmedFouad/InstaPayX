@@ -1,15 +1,25 @@
-package bankapis.hsbcbank;
+package bankapis;
 
-public class HSBCAccount {
-    private int accountId;
+public class BankAccount {
+    private String accountId;
     private String accountHolder;
     private double balance;
 
-    public int getAccountId() {
+    private String phone;
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getAccountId() {
         return accountId;
     }
 
-    public void setAccountId(int accountId) {
+    public void setAccountId(String accountId) {
         this.accountId = accountId;
     }
 
@@ -29,9 +39,10 @@ public class HSBCAccount {
         this.balance = balance;
     }
 
-    public HSBCAccount(int accountId, String accountHolder, double balance) {
+    public BankAccount(String accountId, String accountHolder, double balance, String phone) {
         this.accountId = accountId;
         this.accountHolder = accountHolder;
         this.balance = balance;
+        this.phone = phone;
     }
 }

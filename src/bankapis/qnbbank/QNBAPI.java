@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("/QNBapi/bank-accounts")
+@RequestMapping("/api/qnb/bank-accounts")
 public class QNBAPI {
     private final List<QNBAccount> bankAccounts = new ArrayList<>();
 
