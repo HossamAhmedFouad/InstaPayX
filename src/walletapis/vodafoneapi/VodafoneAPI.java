@@ -1,28 +1,30 @@
-package bankapis.hsbcbank;
+package walletapis.vodafoneapi;
 
 import org.springframework.web.bind.annotation.*;
+import walletapis.etisalatapi.EtisalatAccount;
+
 import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("/HSBCapi/bank-accounts")
-public class HSBCAPI {
-    private final List<HSBCAccount> bankAccounts = new ArrayList<>();
+@RequestMapping("/Vodafoneapi/accounts")
+public class VodafoneAPI {
+    private final List<VodafoneAccount> bankAccounts = new ArrayList<>();
 
-    public HSBCAPI() {
+    public VodafoneAPI() {
         // Populate the in-memory database with some sample data
-        bankAccounts.add(new HSBCAccount(1, "Yassuo Willington", 1605.0));
-        bankAccounts.add(new HSBCAccount(2, "Darius Smith", 2510.0));
+        bankAccounts.add(new VodafoneAccount(1, "Vodafone 1", 1605.0, "0700500"));
+        bankAccounts.add(new VodafoneAccount(2, "Vodafone 2", 2510.0, "0556515"));
     }
 
     @GetMapping
-    public List<HSBCAccount> getAllBankAccounts() {
+    public List<VodafoneAccount> getAllBankAccounts() {
         return bankAccounts;
     }
 
     @GetMapping("/{accountId}")
-    public HSBCAccount getBankAccount(@PathVariable int accountId) {
-        for (HSBCAccount account : bankAccounts) {
+    public VodafoneAccount getBankAccount(@PathVariable int accountId) {
+        for (VodafoneAccount account : bankAccounts) {
             if (account.getAccountId() == accountId) {
                 return account;
             }
@@ -31,14 +33,14 @@ public class HSBCAPI {
     }
 
     @PostMapping
-    public HSBCAccount createBankAccount(@RequestBody HSBCAccount bankAccount) {
+    public VodafoneAccount createBankAccount(@RequestBody VodafoneAccount bankAccount) {
         bankAccounts.add(bankAccount);
         return bankAccount;
     }
 
     @PutMapping("/{accountId}")
-    public HSBCAccount updateBankAccount(@PathVariable int accountId, @RequestBody HSBCAccount updatedAccount) {
-        for (HSBCAccount account : bankAccounts) {
+    public VodafoneAccount updateBankAccount(@PathVariable int accountId, @RequestBody VodafoneAccount updatedAccount) {
+        for (VodafoneAccount account : bankAccounts) {
             if (account.getAccountId() == accountId) {
                 account.setAccountHolder(updatedAccount.getAccountHolder());
                 account.setBalance(updatedAccount.getBalance());

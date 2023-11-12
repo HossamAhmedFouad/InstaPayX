@@ -1,7 +1,9 @@
 # Ignore compiled files
 *.class
 *.jar
-
+/.idea/
+/target/
+/out/
 # Ignore log files
 *.log
 
