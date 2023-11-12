@@ -19,7 +19,7 @@ public class WalletAuthenticator implements Authenticator{
             boolean isVerified = provider.verify();
 
             if (isVerified) {
-                System.out.println("Wallet authentication successful.");
+                System.out.println("Wallet authentication successful. ");
                 return true;
             } else {
                 System.out.println("Wallet authentication failed.");
