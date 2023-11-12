@@ -1,12 +1,32 @@
 package authentication;
 
+
 import providers.WalletProvider;
 
 public class WalletAuthenticator extends Authenticator{
-    private WalletProvider provider;
+    private final WalletProvider provider;
+
+    public WalletAuthenticator(String phone, String accountNumber, WalletProvider provider) {
+        this.phone = phone;
+        this.provider = provider;
+    }
 
     @Override
     public boolean verify() {
-        return false;
+
+        try {
+            boolean isVerified = provider.verify();
+
+            if (isVerified) {
+                System.out.println("Wallet authentication successful.");
+                return true;
+            } else {
+                System.out.println("Wallet authentication failed.");
+                return false;
+            }
+        } catch (Exception e) {
+            System.out.println("An error occurred during Wallet authentication: " + e.getMessage());
+            return false;
+        }
     }
 }
