@@ -1,0 +1,13 @@
+# Ignore compiled files
+*.class
+*.jar
+
+# Ignore log files
+*.log
+
+# Ignore the "build" directory
+/build/
+
+# Ignore a specific file
+secret.txt
+your-project.iml
