@@ -5,18 +5,18 @@ public class InstaPayProvider implements Provider{
 
 
     public boolean transfer(double amount) {
-        return false;
+        return true;
     }
 
     @Override
     public boolean transfer(String receiver, String receiverName, double amount) {
-        return false;
+        return true;
     }
 
     @Override
     public boolean verify() {
 
-        return false;
+        return true;
     }
 
     @Override
@@ -26,11 +26,11 @@ public class InstaPayProvider implements Provider{
 
     @Override
     public boolean withdraw(double amount) {
-        return false;
+        return true;
     }
 
     @Override
     public boolean deposit(double amount) {
-        return false;
+        return true;
     }
 }

@@ -44,6 +44,4 @@ public class RegisterAuthenticator implements Authenticator {
         }
         return true;
     }
-
-
 }

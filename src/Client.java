@@ -1,4 +1,5 @@
 import authentication.Authenticator;
+import authentication.LoginAuthenticator;
 import authentication.OTPHandler;
 import authentication.RegisterAuthenticator;
 import informations.User;
@@ -45,8 +46,15 @@ public class Client {
     }
 
     private boolean login(){
+        System.out.println("Please Enter your InstapayX Username: ");
+        String username = scanner.nextLine();
+        System.out.println("Please Enter your Password: ");
+        String password = scanner.nextLine();
 
-        return false;
+        LoginAuthenticator authService = new LoginAuthenticator(username,password);
+
+
+        return true;
     }
     private boolean logout(){
 

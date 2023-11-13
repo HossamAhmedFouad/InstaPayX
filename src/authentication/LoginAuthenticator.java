@@ -5,10 +5,9 @@ import providers.InstaPayProvider;
 public class LoginAuthenticator implements Authenticator{
     String username;
     String password;
-    private final InstaPayProvider provider;
+    private final InstaPayProvider provider = new InstaPayProvider();
 
-    public LoginAuthenticator(String username, String password, InstaPayProvider provider) {
-        this.provider = provider;
+    public LoginAuthenticator(String username, String password) {
         this.username = username;
         this.password = password;
     }
