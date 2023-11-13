@@ -8,10 +8,7 @@ public class User {
     String phone;
     String name;
     String email;
-
-    boolean accountStatus;
     Provider provider;
-
 
     public String getUsername() {
         return username;
@@ -69,14 +66,6 @@ public class User {
         this.provider = provider;
     }
 
+    boolean accountStatus;
+
 }
-//MyBank   ->   InstaPay=>check my friend account if(wallet) ->   MyFriendWallet else -> myfriendbank
-
-
-//1-bank --> username of reciever
-//2-instapy call with bank to withdraw (amount) from sender bank account to instapay account
-//3-instapy account +=amount
-//4- instapy account want to know receiver account => wallet or bank
-//5- instapy deposite --
-// amount wallet += amount
-//amount bank +=amount
