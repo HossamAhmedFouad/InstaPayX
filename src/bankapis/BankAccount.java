@@ -4,7 +4,6 @@ public class BankAccount {
     private String accountId;
     private String accountHolder;
     private double balance;
-
     private String phone;
 
     public String getPhone() {
