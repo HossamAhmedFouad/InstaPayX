@@ -1,8 +1,14 @@
 package providers;
 
 public class WalletProvider implements Provider {
+
     @Override
-    public boolean transfer() {
+    public void setTransferStrategy(TransferStrategy transferStrategy) {
+
+    }
+
+    @Override
+    public boolean transfer(String receiver, double amount) {
         return false;
     }
 

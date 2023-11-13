@@ -1,9 +1,10 @@
 package providers;
 
 public class InstaPayProvider implements Provider{
-    @Override
-    public boolean transfer() {
 
+
+    @Override
+    public boolean transfer(double amount) {
         return false;
     }
 

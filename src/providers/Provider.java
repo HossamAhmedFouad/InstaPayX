@@ -1,7 +1,10 @@
 package providers;
 
 public interface Provider {
-    public boolean transfer();
+    void setTransferStrategy(TransferStrategy transferStrategy);
+    public boolean transfer(String receiver, double amount);
     public boolean verify();
     public double getBalance();
+//    withdraw(amount)
+//    deposit(amount)
 }
