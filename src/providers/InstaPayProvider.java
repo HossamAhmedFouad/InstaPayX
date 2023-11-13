@@ -3,18 +3,13 @@ package providers;
 public class InstaPayProvider implements Provider{
 
 
-    @Override
+
     public boolean transfer(double amount) {
         return false;
     }
 
     @Override
-    public void setTransferStrategy(TransferStrategy transferStrategy) {
-
-    }
-
-    @Override
-    public boolean transfer(String receiver, double amount) {
+    public boolean transfer(String receiver, String receiverName, double amount) {
         return false;
     }
 

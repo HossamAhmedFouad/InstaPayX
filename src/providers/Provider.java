@@ -1,8 +1,7 @@
 package providers;
 
 public interface Provider {
-    void setTransferStrategy(TransferStrategy transferStrategy);
-    public boolean transfer(String receiver, double amount);
+    public boolean transfer(String receiver, String receiverName, double amount);
     public boolean verify();
     public double getBalance();
 //    withdraw(amount)

@@ -2,6 +2,6 @@ package walletapistrategies;
 
 public interface WalletAPIStrategy {
     boolean verify(String phone);
-    boolean transferTo(String phone, double amount);
-    double getBalance();
+    boolean transferTo(String srcPhone, String destPhone, double amount, String targetUrl);
+    double getBalance(String phone);
 }

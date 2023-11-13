@@ -6,32 +6,31 @@ public class BankProvider implements Provider {
     private String accountNumber;
     private String phone;
     private BankAPIStrategy strategy;
-    private TransferStrategy transferStrategy;
 
-//    public BankProvider(BankAPIStrategy strategy, String accountNumber, String phone) {
-//        this.strategy = strategy;
-//        this.accountNumber = accountNumber;
-//        this.phone = phone;
-//    }
-
-
-    @Override
-    public void setTransferStrategy(TransferStrategy transferStrategy) {
-        this.transferStrategy = transferStrategy;
+    public BankProvider(BankAPIStrategy strategy, String accountNumber, String phone) {
+        this.strategy = strategy;
+        this.accountNumber = accountNumber;
+        this.phone = phone;
     }
 
     @Override
-    public boolean transfer(String receiver, double amount) {
-        return transferStrategy.transfer(receiver,amount);
+    public boolean transfer(String receiverId, String receiverName, double amount) {
+        return strategy.transferTo(accountNumber, receiverId, amount, receiverName);
     }
 
     @Override
     public boolean verify() {
-        return false;
+        return strategy.verify(accountNumber, phone);
     }
 
     @Override
     public double getBalance() {
-        return 0;
+        return strategy.getBalance(accountNumber);
+    }
+
+    public void setAccountNumber(String accountNumber) {
+    }
+
+    public void setPhone(String phone) {
     }
 }
