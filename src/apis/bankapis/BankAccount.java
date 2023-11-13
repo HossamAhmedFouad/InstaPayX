@@ -1,16 +1,24 @@
-package walletapis.vodafoneapi;
+package apis.bankapis;
 
-public class VodafoneAccount {
-    private int accountId;
+public class BankAccount {
+    private String accountId;
     private String accountHolder;
     private double balance;
     private String phone;
 
-    public int getAccountId() {
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getAccountId() {
         return accountId;
     }
 
-    public void setAccountId(int accountId) {
+    public void setAccountId(String accountId) {
         this.accountId = accountId;
     }
 
@@ -30,18 +38,18 @@ public class VodafoneAccount {
         this.balance = balance;
     }
 
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    public VodafoneAccount(int accountId, String accountHolder, double balance, String phone) {
+    public BankAccount(String accountId, String accountHolder, double balance, String phone) {
         this.accountId = accountId;
         this.accountHolder = accountHolder;
         this.balance = balance;
         this.phone = phone;
+    }
+
+    public void withdraw(double amount) {
+        balance -= amount;
+    }
+
+    public void deposit(double amount) {
+        balance += amount;
     }
 }

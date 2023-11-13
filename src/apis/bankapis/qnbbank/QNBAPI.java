@@ -1,8 +1,8 @@
-package bankapis.qnbbank;
+package apis.bankapis.qnbbank;
 
-import bankapis.BankAPI;
-import bankapis.BankAccount;
-import bankapis.BankDTO;
+import apis.bankapis.BankAPI;
+import apis.bankapis.BankAccount;
+import apis.bankapis.BankDTO;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import transfering.BankTransferService;
@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/qnb/bank-accounts")
+@RequestMapping("/api/bank/qnb/accounts")
 public class QNBAPI implements BankAPI {
     private final List<BankAccount> bankAccounts = new ArrayList<>();
 
@@ -73,7 +73,7 @@ public class QNBAPI implements BankAPI {
     }
 
     public String getApiUrl() {
-        return "http://localhost:8001/api/qnb/bank-accounts";
+        return "http://localhost:8001/api/bank/qnb/accounts";
     }
 
     public BankAccount getAccountById(String accountId) {

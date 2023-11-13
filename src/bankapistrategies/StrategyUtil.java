@@ -1,6 +1,6 @@
 
 package bankapistrategies;
-import bankapis.BankDTO;
+import apis.bankapis.BankDTO;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.http.ResponseEntity;
 

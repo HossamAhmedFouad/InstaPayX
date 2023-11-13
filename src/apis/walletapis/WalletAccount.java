@@ -1,18 +1,10 @@
-package bankapis;
+package apis.walletapis;
 
-public class BankAccount {
+public class WalletAccount {
     private String accountId;
     private String accountHolder;
     private double balance;
     private String phone;
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
 
     public String getAccountId() {
         return accountId;
@@ -38,18 +30,26 @@ public class BankAccount {
         this.balance = balance;
     }
 
-    public BankAccount(String accountId, String accountHolder, double balance, String phone) {
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public WalletAccount(String accountId, String accountHolder, double balance, String phone) {
         this.accountId = accountId;
         this.accountHolder = accountHolder;
         this.balance = balance;
         this.phone = phone;
     }
 
-    public void withdraw(double amount) {
-        balance -= amount;
-    }
-
     public void deposit(double amount) {
         balance += amount;
+    }
+
+    public void withdraw(double amount) {
+        balance -= amount;
     }
 }

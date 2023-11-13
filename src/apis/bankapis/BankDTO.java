@@ -1,4 +1,4 @@
-package bankapis;
+package apis.bankapis;
 
 public class BankDTO {
     private String accountNumber;

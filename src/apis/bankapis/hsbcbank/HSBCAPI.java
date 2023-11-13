@@ -1,18 +1,17 @@
-package bankapis.hsbcbank;
+package apis.bankapis.hsbcbank;
 
-import bankapis.BankAPI;
-import bankapis.BankAccount;
-import bankapis.BankDTO;
+import apis.bankapis.BankAPI;
+import apis.bankapis.BankAccount;
+import apis.bankapis.BankDTO;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestTemplate;
 import transfering.BankTransferService;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/hsbc/bank-accounts") // Updated RequestMapping
+@RequestMapping("/api/bank/hsbc/accounts") // Updated RequestMapping
 public class HSBCAPI implements BankAPI {
     private final List<BankAccount> bankAccounts = new ArrayList<>();
     public HSBCAPI() {
@@ -53,9 +52,7 @@ public class HSBCAPI implements BankAPI {
     }
 
     public String getApiUrl() {
-        // Get the base URL of this API dynamically
-        // In a real-world scenario, you might have a configuration or discovery service
-        return "http://localhost:8001/api/hsbc/bank-accounts";
+        return "http://localhost:8001/api/bank/hsbc/accounts";
     }
     @PutMapping("/{accountId}/deposit")
     public ResponseEntity<String> deposit(@PathVariable String accountId, @RequestParam double amount) {
