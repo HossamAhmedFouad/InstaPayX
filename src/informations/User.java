@@ -8,6 +8,7 @@ public class User {
     String phone;
     String name;
     String email;
+    Provider provider;
 
     public String getUsername() {
         return username;
@@ -66,5 +67,5 @@ public class User {
     }
 
     boolean accountStatus;
-    Provider provider;
+
 }
