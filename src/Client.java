@@ -1,3 +1,4 @@
+import apis.instapayx.InstaPayManager;
 import authentication.Authenticator;
 import authentication.LoginAuthenticator;
 import authentication.OTPHandler;
@@ -25,6 +26,8 @@ public class Client {
     public void start(){
         //Implement template method
         register();
+        login();
+        logout();
     }
 
     private boolean mainMenu(){
@@ -46,20 +49,46 @@ public class Client {
     }
 
     private boolean login(){
+        scanner.nextLine();
         System.out.println("Please Enter your InstapayX Username: ");
         String username = scanner.nextLine();
+        System.out.println(username);
         System.out.println("Please Enter your Password: ");
         String password = scanner.nextLine();
 
         LoginAuthenticator authService = new LoginAuthenticator(username,password);
+        boolean isAuthenticated = authService.verify();
 
-
+        if (!isAuthenticated){
+            System.out.println("Login failed. Please check your username and password.");
+            return false;
+        }
+        InstaPayManager instaPayManager = new InstaPayManager(username,password);
+        user = instaPayManager.getAccount();
+        user.setAccountStatus(true);
+        System.out.println("Login successful!");
+        scanner.close();
         return true;
     }
-    private boolean logout(){
 
-        return false;
+    private boolean logout(){
+        if (user != null && user.isAccountStatus()) {
+            user.setAccountStatus(false);
+            System.out.println("Logout successful!");
+            return true;
+        } else {
+            System.out.println("Logout failed. User is not logged in.");
+            return false;
+        }
     }
+
+
+
+
+
+
+
+
     private boolean register(){ //Registering a new InstaPayX account
         //Implement register logic
         System.out.println("Please Enter Username: ");
@@ -113,6 +142,8 @@ public class Client {
         authenticator = new RegisterAuthenticator(user, otpHandler);
         if(authenticator.verify()){
             System.out.println("Registration has been successful");
+            InstaPayManager instaPayManager = new InstaPayManager(username,password);
+            instaPayManager.createAccount(user);
             return true;
         }else{
             System.out.println("Registration has stopped unsuccessfully");

@@ -25,8 +25,11 @@ public class InstaPayManager {
         }
         return responseEntity.getStatusCode().is2xxSuccessful();
     }
-
-
+    public User getAccount(){
+        String apiUrl = baseUrl+"/"+username;
+        User user = restTemplate.getForObject(apiUrl, User.class);
+        return user;
+    }
     public boolean verify() {
         String apiUrl = baseUrl + "/" + username;
         User user = restTemplate.getForObject(apiUrl, User.class);
