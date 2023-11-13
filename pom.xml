@@ -24,7 +24,7 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
-            <version>3.1.0</version> <!-- Use the latest version available -->
+            <version>2.7.1</version> <!-- Use the latest version available -->
         </dependency>
 
         <!-- H2 Database -->

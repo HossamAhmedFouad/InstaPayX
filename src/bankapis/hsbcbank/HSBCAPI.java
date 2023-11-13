@@ -68,7 +68,7 @@ public class HSBCAPI implements BankAPI {
     }
 
     @PutMapping("/{accountId}/withdraw")
-    public ResponseEntity<String> withdraw(@PathVariable String accountId, @RequestBody double amount) {
+    public ResponseEntity<String> withdraw(@PathVariable String accountId, @RequestParam double amount) {
         BankAccount account = getAccountById(accountId);
         if (account != null && account.getBalance() >= amount) {
             account.withdraw(amount);
