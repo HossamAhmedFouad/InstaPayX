@@ -1,6 +1,9 @@
 package apis.instapayx;
 
 import informations.User;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
@@ -25,14 +28,15 @@ public class InstaPayManager {
         }
         return responseEntity.getStatusCode().is2xxSuccessful();
     }
-    public User getAccount(){
+    public UserDTO getAccount(){
         String apiUrl = baseUrl+"/"+username;
-        User user = restTemplate.getForObject(apiUrl, User.class);
+        UserDTO user = restTemplate.getForObject(apiUrl, UserDTO.class);
         return user;
     }
     public boolean verify() {
         String apiUrl = baseUrl + "/" + username;
-        User user = restTemplate.getForObject(apiUrl, User.class);
+        System.out.println("Username: " + username);
+        UserDTO user = restTemplate.getForObject(apiUrl, UserDTO.class);
         return user != null;
     }
 
@@ -49,14 +53,9 @@ public class InstaPayManager {
         return true;
     }
 
-    public boolean createAccount(User user){
-        String apiUrl = baseUrl + "/" + username + "/create";
-        ResponseEntity<User> responseEntity;
-        try{
-            responseEntity = restTemplate.postForEntity(apiUrl, user, User.class);
-        }catch (Throwable t){
-            return false;
-        }
-        return responseEntity.getStatusCode().is2xxSuccessful();
+    public boolean createAccount(UserDTO user){
+        String apiUrl = baseUrl + "/create?username=" + user.getUsername() + "&password=" + user.getPassword() + "&phone=" + user.getPhone() + "&providerName=" + user.getProviderName() + "&providerIdentifier=" + user.getProviderIdentifier();
+        restTemplate.put(apiUrl, null);
+        return true;
     }
 }

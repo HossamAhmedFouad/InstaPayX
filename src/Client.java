@@ -1,11 +1,13 @@
 import apis.instapayx.InstaPayManager;
+import apis.instapayx.UserDTO;
 import authentication.Authenticator;
 import authentication.LoginAuthenticator;
 import authentication.OTPHandler;
 import authentication.RegisterAuthenticator;
+import informations.BankUrl;
 import informations.User;
+import informations.WalletUrl;
 import providers.WalletProvider;
-import strategies.bankapistrategies.BankAPIStrategy;
 import strategies.bankapistrategies.HSBCAPIStrategy;
 import providers.BankProvider;
 import providers.Provider;
@@ -64,7 +66,7 @@ public class Client {
             return false;
         }
         InstaPayManager instaPayManager = new InstaPayManager(username,password);
-        user = instaPayManager.getAccount();
+        UserDTO userDTO = instaPayManager.getAccount();
         user.setAccountStatus(true);
         System.out.println("Login successful!");
         scanner.close();
@@ -84,11 +86,6 @@ public class Client {
 
 
 
-
-
-
-
-
     private boolean register(){ //Registering a new InstaPayX account
         //Implement register logic
         System.out.println("Please Enter Username: ");
@@ -97,22 +94,28 @@ public class Client {
         String password = scanner.nextLine();
         String phone = null;
         Provider provider = null;
+        String accountNumber = null;
+        String providerName = null;
+        String providerIdentifier = null;
         int choice;
         System.out.println("Please Choose Provider\n1 - Bank Account\n2 - Wallet Account");
         choice = scanner.nextInt();
         scanner.nextLine();
         if (choice == 1){
             System.out.println("Please Enter Your Account Number: ");
-            String accountNumber = scanner.nextLine();
+            accountNumber = scanner.nextLine();
+            providerIdentifier = accountNumber;
             System.out.println("Please Enter your Phone Number: ");
             phone = scanner.nextLine();
             System.out.println("Please Choose Your Bank Provider");
             availableBanks();
             choice = scanner.nextInt();
             if(choice == 1){
+                providerName = BankUrl.HSBC.getApiUrl();
                 provider = new BankProvider(new HSBCAPIStrategy(),accountNumber,phone);
             }
             if(choice == 2){
+                providerName = BankUrl.QNB.getApiUrl();
                 provider = new BankProvider(new QNBAPIStrategy(), accountNumber, phone);
 
             }
@@ -120,13 +123,16 @@ public class Client {
         if(choice == 2){
             System.out.println("Please Enter your phone number: ");
             phone = scanner.nextLine();
+            providerIdentifier = phone;
             System.out.println("Please Choose Your Wallet Provider");
             availableWallets();
             choice = scanner.nextInt();
             if(choice == 1){
+                providerName = WalletUrl.ETISALAT.getApiUrl();
                 provider = new WalletProvider(new EtisalatAPIStrategy(), phone);
             }
             if(choice == 2){
+                providerName = WalletUrl.VODAFONE.getApiUrl();
                 provider = new WalletProvider(new VodafoneAPIStrategy(), phone);
             }
         }
@@ -143,7 +149,7 @@ public class Client {
         if(authenticator.verify()){
             System.out.println("Registration has been successful");
             InstaPayManager instaPayManager = new InstaPayManager(username,password);
-            instaPayManager.createAccount(user);
+            instaPayManager.createAccount(new UserDTO(username,password,phone,providerName,providerIdentifier));
             return true;
         }else{
             System.out.println("Registration has stopped unsuccessfully");

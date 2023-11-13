@@ -4,6 +4,7 @@ import informations.User;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 import transfering.InstaPayXTransferService;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,16 +12,17 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/instapayx/accounts") // Updated RequestMapping
 public class InstaPayXAPI {
-    private final List<User> bankAccounts = new ArrayList<>();
+    private final List<UserDTO> bankAccounts = new ArrayList<>();
 
     public InstaPayXAPI() {
 
     }
 
     @GetMapping("/{username}")
-    public User getAccount(@PathVariable String username) {
-        for (User account : bankAccounts) {
+    public UserDTO getAccount(@PathVariable String username) {
+        for (UserDTO account : bankAccounts) {
             if (account.getUsername().equals(username)) {
+                System.out.println(account);
                 return account;
             }
         }
@@ -29,9 +31,14 @@ public class InstaPayXAPI {
 
     @PostMapping("/transfer-to")
     public ResponseEntity<String> transferTo(@RequestParam String targetApiUrl, @RequestParam String sourceAccountUser, @RequestParam String targetAccountUser, @RequestParam double amount) {
-        User sourceAccount = getAccountByUsername(sourceAccountUser);
-        if (sourceAccount == null || sourceAccount.getProvider().getBalance() < amount) {
-            return ResponseEntity.badRequest().body("Invalid source account or insufficient balance");
+        UserDTO sourceAccount = getAccountByUsername(sourceAccountUser);
+        if (sourceAccount == null) {
+            return ResponseEntity.badRequest().body("Invalid source account");
+        }
+        double balance = new RestTemplate().getForObject(sourceAccount.getProviderName() + "/" + sourceAccount.getProviderIdentifier() + "/balance", Double.class);
+
+        if(balance < amount){
+            return ResponseEntity.badRequest().body("Insufficient Balance");
         }
         InstaPayXTransferService.transferBetweenUsers(getApiUrl(), targetApiUrl, sourceAccountUser, targetAccountUser, amount);
 
@@ -44,24 +51,26 @@ public class InstaPayXAPI {
 
     @PutMapping("/{username}/deposit")
     public ResponseEntity<String> deposit(@PathVariable String username, @RequestParam double amount) {
-        User account = getAccountByUsername(username);
-        if (account != null && account.getProvider().deposit(amount) ) {
-            return ResponseEntity.ok("Deposit successful");
+        UserDTO account = getAccountByUsername(username);
+        if(account == null){
+            return ResponseEntity.badRequest().body("Invalid account");
         }
-        return ResponseEntity.badRequest().body("Invalid account");
+        new RestTemplate().put(account.getProviderName()+"/" + account.getProviderIdentifier() + "/deposit?amount=" + amount, null);
+        return ResponseEntity.ok("Deposit successful");
     }
 
     @PutMapping("/{username}/withdraw")
     public ResponseEntity<String> withdraw(@PathVariable String username, @RequestParam double amount) {
-        User account = getAccountByUsername(username);
-        if(account != null && account.getProvider().getBalance() >= amount && account.getProvider().withdraw(amount)){
-            return ResponseEntity.ok("Withdrawal successful");
+        UserDTO account = getAccountByUsername(username);
+        if(account == null){
+            return ResponseEntity.badRequest().body("Invalid account");
         }
-        return ResponseEntity.badRequest().body("Invalid account or insufficient balance");
+        new RestTemplate().put(account.getProviderName()+"/" + account.getProviderIdentifier() + "/withdraw?amount=" + amount, null);
+        return ResponseEntity.ok("Deposit successful");
     }
 
-    public User getAccountByUsername(String username) {
-        for (User account : bankAccounts) {
+    public UserDTO getAccountByUsername(String username) {
+        for (UserDTO account : bankAccounts) {
             if (account.getUsername().equals(username)) {
                 return account;
             }
@@ -69,15 +78,13 @@ public class InstaPayXAPI {
         return null;
     }
 
-    @PostMapping("/create")
-    public ResponseEntity<User> createBankAccount(@RequestBody User user) {
-        if (user == null || user.getUsername() == null) {
+    @PutMapping("/create")
+    public ResponseEntity<UserDTO> createBankAccount(@RequestParam String username, @RequestParam String password, @RequestParam String phone, @RequestParam String providerName, @RequestParam String providerIdentifier) {
+        if(getAccountByUsername(username) != null){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        if(getAccountByUsername(user.getUsername()) != null){
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-        bankAccounts.add(user);
-        return new ResponseEntity<>(user, HttpStatus.CREATED);
+        UserDTO userDTO = new UserDTO(username, password, phone, providerName, providerIdentifier);
+        bankAccounts.add(userDTO);
+        return new ResponseEntity<>(userDTO, HttpStatus.CREATED);
     }
 }

@@ -5,11 +5,12 @@ import apis.instapayx.InstaPayManager;
 public class LoginAuthenticator implements Authenticator{
     String username;
     String password;
-    private final InstaPayManager manager = new InstaPayManager(username, password);
+    private InstaPayManager manager;
 
     public LoginAuthenticator(String username, String password) {
         this.username = username;
         this.password = password;
+        manager = new InstaPayManager(username, password);
     }
 
     @Override
