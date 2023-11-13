@@ -1,10 +1,8 @@
 package apis.instapayx;
 
-import apis.bankapis.BankAccount;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import transfering.BankTransferService;
-
+import transfering.InstaPayXTransferService;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,7 +12,6 @@ public class InstaPayXAPI {
     private final List<InstaPayXAccount> bankAccounts = new ArrayList<>();
 
     public InstaPayXAPI() {
-        // Populate the in-memory database with some sample data
         bankAccounts.add(new InstaPayXAccount("user1", "password1", "user1@instapay.com", "0777500"));
         bankAccounts.add(new InstaPayXAccount("user2", "password2", "user2@instapay.com", "044112335"));
     }
@@ -30,13 +27,12 @@ public class InstaPayXAPI {
     }
 
     @PostMapping("/transfer-to")
-    public ResponseEntity<String> transferTo(@RequestParam String targetApiUrl, @RequestParam String sourceAccountId, @RequestParam String targetAccountId, @RequestParam double amount) {
-        InstaPayXAccount sourceAccount = getAccountByUsername(sourceAccountId);
+    public ResponseEntity<String> transferTo(@RequestParam String targetApiUrl, @RequestParam String sourceAccountUser, @RequestParam String targetAccountUser, @RequestParam double amount) {
+        InstaPayXAccount sourceAccount = getAccountByUsername(sourceAccountUser);
         if (sourceAccount == null || sourceAccount.getBalance() < amount) {
             return ResponseEntity.badRequest().body("Invalid source account or insufficient balance");
         }
-
-        BankTransferService.transferBetweenBanks(getApiUrl(), targetApiUrl, sourceAccountId, targetAccountId, amount);
+        InstaPayXTransferService.transferBetweenUsers(getApiUrl(), targetApiUrl, sourceAccountUser, targetAccountUser, amount);
 
         return ResponseEntity.ok("Balance transferred successfully");
     }
@@ -48,8 +44,7 @@ public class InstaPayXAPI {
     @PutMapping("/{username}/deposit")
     public ResponseEntity<String> deposit(@PathVariable String username, @RequestParam double amount) {
         InstaPayXAccount account = getAccountByUsername(username);
-        if (account != null) {
-            account.deposit(amount);
+        if (account != null && account.provider.deposit(amount) ) {
             return ResponseEntity.ok("Deposit successful");
         }
         return ResponseEntity.badRequest().body("Invalid account");
@@ -58,8 +53,7 @@ public class InstaPayXAPI {
     @PutMapping("/{username}/withdraw")
     public ResponseEntity<String> withdraw(@PathVariable String username, @RequestParam double amount) {
         InstaPayXAccount account = getAccountByUsername(username);
-        if (account != null && account.getBalance() >= amount) {
-            account.withdraw(amount);
+        if(account != null && account.getBalance() >= amount && account.provider.withdraw(amount)){
             return ResponseEntity.ok("Withdrawal successful");
         }
         return ResponseEntity.badRequest().body("Invalid account or insufficient balance");

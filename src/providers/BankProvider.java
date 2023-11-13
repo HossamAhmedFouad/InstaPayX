@@ -1,6 +1,6 @@
 package providers;
 
-import bankapistrategies.BankAPIStrategy;
+import strategies.bankapistrategies.BankAPIStrategy;
 
 public class BankProvider implements Provider {
     private String accountNumber;
@@ -26,6 +26,16 @@ public class BankProvider implements Provider {
     @Override
     public double getBalance() {
         return strategy.getBalance(accountNumber);
+    }
+
+    @Override
+    public boolean withdraw(double amount) {
+        return strategy.withdraw(accountNumber, amount);
+    }
+
+    @Override
+    public boolean deposit(double amount) {
+        return strategy.deposit(accountNumber, amount);
     }
 
     public void setAccountNumber(String accountNumber) {

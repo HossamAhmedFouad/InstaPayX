@@ -1,18 +1,18 @@
 
-package bankapistrategies;
+package strategies.bankapistrategies;
 
 import apis.bankapis.BankDTO;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
 public class QNBAPIStrategy implements BankAPIStrategy {
+    RestTemplate restTemplate = new RestTemplate();
     String baseUrl = "http://localhost:8001/api/bank/qnb/accounts";
 
 
     @Override
     public boolean verify(String accountNumber, String phone) {
         String apiUrl = baseUrl + "/" + accountNumber;
-        RestTemplate restTemplate = new RestTemplate();
         BankDTO bankDTO = restTemplate.getForObject(apiUrl, BankDTO.class);
         return bankDTO != null && phone.equals(bankDTO.getPhone());
     }
@@ -20,7 +20,6 @@ public class QNBAPIStrategy implements BankAPIStrategy {
     @Override
     public boolean transferTo(String srcAccNumber, String destAccNumber, double amount, String targetUrl) {
         String apiUrl = baseUrl + "/transfer-to?targetApiUrl=" + targetUrl + "&sourceAccountId=" + srcAccNumber + "&targetAccountId=" + destAccNumber + "&amount=" + amount;
-        RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<String> responseEntity;
         try{
             responseEntity = restTemplate.postForEntity(apiUrl, null, String.class);
@@ -32,11 +31,22 @@ public class QNBAPIStrategy implements BankAPIStrategy {
     @Override
     public double getBalance(String accountNumber) {
         String apiUrl = baseUrl + "/" + accountNumber + "/balance";
-
-        // Use RestTemplate to make the GET request
-        RestTemplate restTemplate = new RestTemplate();
         Double balance = restTemplate.getForObject(apiUrl, Double.class);
         return balance;
+    }
+
+    @Override
+    public boolean withdraw(String accountNumber, double amount) {
+        String apiUrl = baseUrl + "/" + accountNumber + "/withdraw?amount=" + amount;
+        restTemplate.put(apiUrl, null);
+        return true;
+    }
+
+    @Override
+    public boolean deposit(String accountNumber, double amount) {
+        String apiUrl = baseUrl + "/" + accountNumber + "/deposit?amount=" + amount;
+        restTemplate.put(apiUrl, null);
+        return true;
     }
 
 }

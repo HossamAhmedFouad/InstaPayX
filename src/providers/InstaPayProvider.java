@@ -23,4 +23,14 @@ public class InstaPayProvider implements Provider{
     public double getBalance() {
         return 0;
     }
+
+    @Override
+    public boolean withdraw(double amount) {
+        return false;
+    }
+
+    @Override
+    public boolean deposit(double amount) {
+        return false;
+    }
 }

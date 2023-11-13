@@ -9,7 +9,14 @@ public class User {
     String name;
     String email;
     Provider provider;
+    boolean accountStatus;
 
+    public User(String username, String password,String phone, Provider provider){
+        this.username = username;
+        this.password = password;
+        this.phone = phone;
+        this.provider = provider;
+    }
     public String getUsername() {
         return username;
     }
@@ -66,6 +73,6 @@ public class User {
         this.provider = provider;
     }
 
-    boolean accountStatus;
+
 
 }

@@ -16,8 +16,8 @@ public class HSBCAPI implements BankAPI {
     private final List<BankAccount> bankAccounts = new ArrayList<>();
     public HSBCAPI() {
         // Populate the in-memory database with some sample data
-        bankAccounts.add(new BankAccount("1", "Yassuo Willington", 1605.0, "0777500"));
-        bankAccounts.add(new BankAccount("2", "Darius Smith", 2510.0, "044112335"));
+        bankAccounts.add(new BankAccount("1", "Yassuo Willington", 1605.0, "01116535351"));
+        bankAccounts.add(new BankAccount("2", "Darius Smith", 2510.0, "01116535351"));
     }
 
     @GetMapping("/{accountId}")
