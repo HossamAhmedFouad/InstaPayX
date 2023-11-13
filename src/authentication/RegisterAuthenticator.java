@@ -34,7 +34,15 @@ public class RegisterAuthenticator implements Authenticator {
         boolean isUsernameValid = Validation.isValidUsername(user.getUsername());
         boolean isComplexPassword = Validation.isComplexPassword(user.getPassword());
 
-        return isUsernameValid && isComplexPassword;
+        if (!isUsernameValid){
+            System.out.println("User name invalid");
+            return false;
+        }
+        else if (!isComplexPassword){
+            System.out.println("not complex password");
+            return false;
+        }
+        return true;
     }
 
 

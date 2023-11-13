@@ -45,11 +45,11 @@ public class Client {
     }
 
     private boolean login(){
-        //Implement login logic
+
         return false;
     }
     private boolean logout(){
-        //Implement logout
+
         return false;
     }
     private boolean register(){ //Registering a new InstaPayX account
