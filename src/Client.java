@@ -120,6 +120,10 @@ public class Client {
     private boolean register(){
         System.out.println("Please Enter Username: ");
         String username = readLine();
+        if(InstaPayManager.exists(username)){
+            System.out.println("Username already exists");
+            return false;
+        }
         System.out.println("Please Enter Password: ");
         String password = readLine();
         String phone = null;
@@ -148,8 +152,7 @@ public class Client {
                 provider = new BankProvider(new QNBAPIStrategy(), accountNumber, phone);
 
             }
-        }
-        if(choice == 2){
+        }else if(choice == 2){
             System.out.println("Please Enter your phone number: ");
             phone = readLine();
             providerIdentifier = phone;
