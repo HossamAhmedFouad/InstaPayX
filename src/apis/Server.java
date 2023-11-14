@@ -14,23 +14,9 @@ public class Server {
 
     public static void startServer(String[] args) {
         SpringApplication.run(Server.class, args);
-        logger.info("Server has started!");
-        BankAPIStrategy st = new QNBAPIStrategy("2", "11335");
-        BankAPIStrategy st2 = new HSBCAPIStrategy("1", "0777500");
-
-        logger.info("Verifying bank API...");
-            double am = 100;
-            boolean res = st2.transferTo("2",am,"http://localhost:8001/api/qnb/bank-accounts");
-            logger.info("Transaction result: " + res);
-            logger.info("Balance result: " + st.getBalance());
-        logger.info("Balance result: " + st2.getBalance());
-
     }
 
     public static void main(String[] args) {
         startServer(args);
-
-        // Log a message after the server has started
-
     }
 }
