@@ -46,7 +46,7 @@ public class InstaPayXAPI {
     }
 
     public String getApiUrl() {
-        return "http://localhost:8001/api/instapay/accounts";
+        return "http://localhost:8001/api/instapayx/accounts";
     }
 
     @PutMapping("/{username}/deposit")

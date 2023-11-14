@@ -12,15 +12,15 @@ import org.slf4j.LoggerFactory;
 public class Server {
     private static final Logger logger = LoggerFactory.getLogger(Server.class);
 
-    public static void startServer(String[] args) {
-        SpringApplication.run(Server.class, args);
+    public static void startServer() {
+        SpringApplication.run(Server.class);
         logger.info("Server has started!");
     }
 
-    public static void main(String[] args) {
-        startServer(args);
-
-        // Log a message after the server has started
-
-    }
+//    public static void main(String[] args) {
+//        startServer(args);
+//
+//        // Log a message after the server has started
+//
+//    }
 }

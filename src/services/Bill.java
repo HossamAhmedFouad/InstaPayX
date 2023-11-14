@@ -1,10 +1,9 @@
 package services;
 
-import informations.BankUrl;
 import informations.User;
-import providers.Provider;
 
 public interface Bill {
-    boolean pay(User user, String code, BankUrl bankUrl, double amount);
+    boolean pay(User user, String code);
+    double codeValue(String code);
     void generateBill(String name, String code, double amount);
 }

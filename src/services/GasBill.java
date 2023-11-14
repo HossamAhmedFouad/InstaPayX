@@ -1,20 +1,19 @@
 package services;
 
-import informations.BankUrl;
 import informations.User;
-import providers.Provider;
-
-import java.util.Scanner;
 
 public class GasBill implements Bill{
-
-
+    String GAS_BILL_ACCOUNT = "CREATE ACCOUNT";
     @Override
-    public boolean pay(User user, String code, BankUrl bankUrl, double amount) {
-        if(user.getProvider().transfer(code, bankUrl.getApiUrl(), amount)){
-            generateBill(user.getUsername(), code, amount);
+    public boolean pay(User user, String code) {
+        if(user.getProvider().transfer(code, GAS_BILL_ACCOUNT, codeValue(code))){
+            generateBill(user.getUsername(), code, codeValue(code));
         }
         return true;
+    }
+    @Override
+    public double codeValue(String code){
+        return Double.parseDouble(code) / 10 * 3 + 5;
     }
 
     @Override

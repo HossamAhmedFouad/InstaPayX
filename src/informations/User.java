@@ -9,11 +9,10 @@ public class User {
     Provider provider;
     boolean accountStatus;
 
-    public User(String username, String password,String phone, Provider provider){
+    public User(String username, String password,String phone){
         this.username = username;
         this.password = password;
         this.phone = phone;
-        this.provider = provider;
     }
 
     public User(String username,String password){
@@ -44,7 +43,7 @@ public class User {
         this.phone = phone;
     }
 
-    public boolean isAccountStatus() {
+    public boolean getAccountStatus() {
         return accountStatus;
     }
 

@@ -1,24 +1,24 @@
 package services;
 
-import informations.BankUrl;
 import informations.User;
-import providers.Provider;
-
-import java.util.Scanner;
 
 public class WaterBill implements Bill{
 
+    String WATER_BILL_ACCOUNT = "CREATE ACCOUNT";
     @Override
-    public boolean pay(User user, String code, BankUrl bankUrl, double amount) {
-        if(user.getProvider().transfer(code, bankUrl.getApiUrl(), amount)){
-            generateBill(user.getUsername(), code, amount);
+    public boolean pay(User user, String code) {
+        if(user.getProvider().transfer(code, WATER_BILL_ACCOUNT, codeValue(code))){
+            generateBill(user.getUsername(), code, codeValue(code));
             return true;
         }else{
             System.out.println("Error in transferring");
             return false;
         }
     }
-
+    @Override
+    public double codeValue(String code){
+        return Double.parseDouble(code) / 20 * 9 + 8;
+    }
     @Override
     public void generateBill(String name, String code, double amount) {
         System.out.println("************ Water Bill ************");

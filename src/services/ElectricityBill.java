@@ -1,19 +1,22 @@
 package services;
 
-import informations.BankUrl;
 import informations.User;
-import providers.Provider;
 
 public class ElectricityBill implements Bill{
+    String ELECTRICITY_BILL_ACCOUNT = "CREATE ACCOUNT";
     @Override
-    public boolean pay(User user, String code, BankUrl bankUrl, double amount) {
-        if(user.getProvider().transfer(code, bankUrl.getApiUrl(), amount)){
-            generateBill(user.getUsername(), code, amount);
+    public boolean pay(User user, String code) {
+        if(user.getProvider().transfer(code, ELECTRICITY_BILL_ACCOUNT, codeValue(code))){
+            generateBill(user.getUsername(), code, codeValue(code));
             return true;
         }else{
             System.out.println("Error in transferring");
             return false;
         }
+    }
+    @Override
+    public double codeValue(String code){
+        return Double.parseDouble(code) / 15 * 6 + 7;
     }
 
     @Override

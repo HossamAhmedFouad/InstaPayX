@@ -16,8 +16,8 @@ public class EtisalatAPI implements WalletAPI {
 
     public EtisalatAPI() {
         // Populate the in-memory database with some sample data
-        bankAccounts.add(new WalletAccount("1", "Tyson Kite Willington", 1605.0, "0700500"));
-        bankAccounts.add(new WalletAccount("2", "John Man Smith", 2510.0, "0556515"));
+        bankAccounts.add(new WalletAccount("1", "Tyson Kite Willington", 1605.0, "01116535351"));
+        bankAccounts.add(new WalletAccount("2", "John Man Smith", 2510.0, "01116535351"));
     }
 
     @GetMapping("/{phone}")

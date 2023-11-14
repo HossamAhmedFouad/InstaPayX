@@ -4,6 +4,9 @@ public class WalletDTO {
     private String phone;
     private double balance;
 
+    public WalletDTO(){
+
+    }
     public WalletDTO(String phone, double balance){
         this.phone = phone;
         this.balance = balance;

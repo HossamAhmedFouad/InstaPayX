@@ -18,7 +18,7 @@ public class VodafoneAPIStrategy implements WalletAPIStrategy {
 
     @Override
     public boolean transferTo(String srcPhone, String destPhone, double amount, String targetUrl) {
-        String apiUrl = baseUrl + "/transfer-to?targetApiUrl=" + targetUrl + "&sourceAccountId=" + srcPhone + "&targetAccountId=" + destPhone + "&amount=" + amount;
+        String apiUrl = baseUrl + "/transfer-to?targetApiUrl=" + targetUrl + "&sourceAccountPhone=" + srcPhone + "&targetAccountPhone=" + destPhone + "&amount=" + amount;
         ResponseEntity<String> responseEntity;
         try {
             responseEntity = restTemplate.postForEntity(apiUrl, null, String.class);

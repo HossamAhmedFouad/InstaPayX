@@ -16,8 +16,8 @@ public class VodafoneAPI implements WalletAPI {
 
     public VodafoneAPI() {
         // Populate the in-memory database with some sample data
-        bankAccounts.add(new WalletAccount("1", "Vodafone 1", 1605.0, "0700500"));
-        bankAccounts.add(new WalletAccount("2", "Vodafone 2", 2510.0, "0556515"));
+        bankAccounts.add(new WalletAccount("1", "Vodafone 1", 1605.0, "01116535351"));
+        bankAccounts.add(new WalletAccount("2", "Vodafone 2", 2510.0, "01116535350"));
     }
     @GetMapping("/{phone}")
     public WalletDTO getWalletAccount(@PathVariable String phone) {

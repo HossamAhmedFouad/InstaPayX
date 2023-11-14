@@ -8,9 +8,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
 public class InstaPayManager {
-    RestTemplate restTemplate = new RestTemplate();
+    static RestTemplate restTemplate = new RestTemplate();
 
-    String baseUrl = "http://localhost:8001/api/instapayx/accounts";
+    static String baseUrl = "http://localhost:8001/api/instapayx/accounts";
     String username;
     String password;
 
@@ -19,7 +19,7 @@ public class InstaPayManager {
         this.password = password;
     }
     public boolean transfer(String receiver, String receiverName, double amount) {
-        String apiUrl = baseUrl + "/transfer-to?targetApiUrl=" + receiverName + "&sourceAccountId=" + username + "&targetAccountId=" + receiver + "&amount=" + amount;
+        String apiUrl = baseUrl + "/transfer-to?targetApiUrl=" + receiverName + "&sourceAccountUser=" + username + "&targetAccountUser=" + receiver + "&amount=" + amount;
         ResponseEntity<String> responseEntity;
         try{
             responseEntity = restTemplate.postForEntity(apiUrl, null, String.class);
@@ -34,6 +34,29 @@ public class InstaPayManager {
         return user;
     }
     public boolean verify() {
+        String apiUrl = baseUrl + "/" + username;
+        System.out.println("Username: " + username);
+        UserDTO user = restTemplate.getForObject(apiUrl, UserDTO.class);
+        return user != null && username.equals(user.getUsername()) && password.equals(user.getPassword());
+    }
+
+    public static String getProviderName(String username){
+        String apiUrl = baseUrl + "/" + username;
+        System.out.println("Username: " + username);
+        UserDTO user = restTemplate.getForObject(apiUrl, UserDTO.class);
+        if(user != null){
+            return user.getProviderName();
+        }
+        return null;
+    }
+
+    public static UserDTO getAccount(String username){
+        String apiUrl = baseUrl+"/"+username;
+        UserDTO user = restTemplate.getForObject(apiUrl, UserDTO.class);
+        return user;
+    }
+
+    public static boolean exists(String username){
         String apiUrl = baseUrl + "/" + username;
         System.out.println("Username: " + username);
         UserDTO user = restTemplate.getForObject(apiUrl, UserDTO.class);
