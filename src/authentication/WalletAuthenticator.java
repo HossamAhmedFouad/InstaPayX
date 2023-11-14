@@ -5,8 +5,10 @@ import providers.WalletProvider;
 
 public class WalletAuthenticator implements Authenticator{
     private final WalletProvider provider;
+    private String phone;
 
-    public WalletAuthenticator(WalletProvider provider) {
+    public WalletAuthenticator(String phone, String accountNumber, WalletProvider provider) {
+        this.phone = phone;
         this.provider = provider;
     }
 

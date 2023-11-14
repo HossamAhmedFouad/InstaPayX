@@ -1,29 +1,42 @@
 package services;
 
-import informations.BankUrl;
-import informations.User;
 import providers.Provider;
 
+import java.util.Scanner;
+
 public class ElectricityBill implements Bill{
+
+
     @Override
-    public boolean pay(User user, String code, BankUrl bankUrl, double amount) {
-        if(user.getProvider().transfer(code, bankUrl.getApiUrl(), amount)){
-            generateBill(user.getUsername(), code, amount);
-            return true;
-        }else{
-            System.out.println("Error in transferring");
+    public boolean pay(Provider provider, String code) {
+        try (Scanner scanner = new Scanner(System.in)) {
+            System.out.println("Enter code:");
+            String userInputCode = scanner.nextLine();
+
+            boolean paymentSuccessful = provider.transfer();
+
+            if (paymentSuccessful) {
+                System.out.println("Electricity bill paid successfully using " + provider.getClass().getSimpleName());
+                return true;
+            } else {
+                System.out.println("Failed to pay electricity bill using " + provider.getClass().getSimpleName());
+                return false;
+            }
+        } catch (Exception e) {
+            System.out.println("An error occurred during Bill: " + e.getMessage());
             return false;
         }
     }
 
     @Override
-    public void generateBill(String name, String code, double amount) {
+    public void generateBill() {
         System.out.println("************ Electricity Bill ************");
-        System.out.println("Name: " + name);
-        System.out.println("Payment Code: " + code);
+        System.out.println("Name: John Doe");
+        System.out.println("Address: 123 Main Street, Cityville");
+        System.out.println("Payment Code: ABC123");
         System.out.println("Details: ");
-        System.out.println("Electricity consumption for current month (paid monthly)");
-        System.out.println("Amount:" + amount);
+        System.out.println("Electricity consumption details go here.");
+        System.out.println("Amount: $100.00");
         System.out.println("*****************************************");
     }
 

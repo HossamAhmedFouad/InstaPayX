@@ -1,23 +1,23 @@
 package authentication;
 
-import apis.instapayx.InstaPayManager;
+import providers.InstaPayProvider;
 
 public class LoginAuthenticator implements Authenticator{
     String username;
     String password;
-    private InstaPayManager manager;
+    private final InstaPayProvider provider;
 
-    public LoginAuthenticator(String username, String password) {
+    public LoginAuthenticator(String username, String password, InstaPayProvider provider) {
+        this.provider = provider;
         this.username = username;
         this.password = password;
-        manager = new InstaPayManager(username, password);
     }
 
     @Override
     public boolean verify() {
 
         try {
-            boolean isVerified = manager.verify();
+            boolean isVerified = provider.verify();
 
             if (isVerified) {
                 System.out.println("Login authentication successful.");
