@@ -3,20 +3,14 @@ package authentication;
 import providers.BankProvider;
 
 public class BankAuthenticator implements Authenticator{
-    private String accountNumber;
     private final BankProvider provider;
-    private String phone;
-    public BankAuthenticator(String phone, String accountNumber, BankProvider provider) {
-        this.phone = phone;
-        this.accountNumber = accountNumber;
+    public BankAuthenticator(BankProvider provider) {
         this.provider = provider;
     }
 
 
     @Override
     public boolean verify(){
-        provider.setAccountNumber(accountNumber);
-        provider.setPhone(phone);
         try {
             boolean isVerified = provider.verify();
 

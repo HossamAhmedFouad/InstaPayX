@@ -5,7 +5,7 @@ import java.util.regex.Pattern;
 
 public class Validation {
     public static boolean isValidUsername(String username) {
-        String regex = "[a-zA-Z- -]+";
+        String regex = "^[a-zA-Z -]+$";
 
         Pattern pattern = Pattern.compile(regex);
 

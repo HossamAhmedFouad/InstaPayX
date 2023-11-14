@@ -6,9 +6,20 @@ public class User {
     String username;
     String password;
     String phone;
-    String name;
-    String email;
+    Provider provider;
+    boolean accountStatus;
 
+    public User(String username, String password,String phone, Provider provider){
+        this.username = username;
+        this.password = password;
+        this.phone = phone;
+        this.provider = provider;
+    }
+
+    public User(String username,String password){
+        this.username = username;
+        this.password = password;
+    }
     public String getUsername() {
         return username;
     }
@@ -33,22 +44,6 @@ public class User {
         this.phone = phone;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
     public boolean isAccountStatus() {
         return accountStatus;
     }
@@ -65,6 +60,6 @@ public class User {
         this.provider = provider;
     }
 
-    boolean accountStatus;
-    Provider provider;
+
+
 }
