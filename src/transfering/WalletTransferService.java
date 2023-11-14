@@ -19,7 +19,7 @@ public class WalletTransferService {
         String sourceUrl = buildUrl(sourceApiUrl, sourceAccountPhone, "withdraw", amount);
         String targetUrl = buildUrl(targetApiUrl, targetAccountPhone ,"deposit", amount);
 
-        restTemplate.put(sourceUrl, null); // Assuming no request body for simplicity
-        restTemplate.put(targetUrl, null); // Assuming no request body for simplicity
+        restTemplate.put(sourceUrl, null);
+        restTemplate.put(targetUrl, null);
     }
 }

@@ -20,8 +20,7 @@ public class InstaPayXTransferService {
         String targetUrl = buildUrl(targetApiUrl, targetUsername ,"deposit", amount);
         System.out.println("URL Source: " + sourceUrl);
         System.out.println("URL Target: " + targetUrl);
-
-        restTemplate.put(sourceUrl, null); // Assuming no request body for simplicity
-        restTemplate.put(targetUrl, null); // Assuming no request body for simplicity
+        restTemplate.put(sourceUrl, null);
+        restTemplate.put(targetUrl, null);
     }
 }

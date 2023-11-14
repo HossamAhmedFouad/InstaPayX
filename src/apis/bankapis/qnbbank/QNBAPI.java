@@ -17,8 +17,9 @@ public class QNBAPI implements BankAPI {
 
     public QNBAPI() {
         // Populate the in-memory database with some sample data
-        bankAccounts.add(new BankAccount("1", "John Doe", 1000.0, "12334"));
-        bankAccounts.add(new BankAccount("2", "Jane Smith", 2500.0, "11335"));
+        bankAccounts.add(new BankAccount("1", "ElectricityBill", 1000.0, "01116157934"));
+        bankAccounts.add(new BankAccount("2", "GasBill", 2500.0, "01116781036"));
+        bankAccounts.add(new BankAccount("3", "WaterBill", 2500.0, "01116012301"));
     }
 
     @PostMapping("/transfer-to")

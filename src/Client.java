@@ -225,7 +225,7 @@ public class Client {
                 }
             }
             System.out.println("Please Enter Amount To Transfer: ");
-            double amount = scanner.nextDouble();
+            double amount = Double.parseDouble(scanner.next());
             if( user.getProvider().transfer(receiverID, targetUrl, amount)){
                 System.out.println("Transfer Has Been Successful");
             }else{
@@ -237,7 +237,7 @@ public class Client {
             System.out.println("Please Enter Username to transfer to: ");
             username = readLine();
             System.out.println("Please Enter amount: ");
-            amount = scanner.nextDouble();
+            amount = Double.parseDouble(scanner.next());
             if(!InstaPayManager.exists(username)){
                 System.out.println("Username does not exist");
                 return false;

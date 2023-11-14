@@ -3,10 +3,11 @@ package services;
 import informations.User;
 
 public class GasBill implements Bill{
-    String GAS_BILL_ACCOUNT = "CREATE ACCOUNT";
+    String GAS_BILL_ACCOUNT = "http://localhost:8001/api/bank/qnb/accounts";
+    String ACCOUNT_NUMBER = "2";
     @Override
     public boolean pay(User user, String code) {
-        if(user.getProvider().transfer(code, GAS_BILL_ACCOUNT, codeValue(code))){
+        if(user.getProvider().transfer(ACCOUNT_NUMBER, GAS_BILL_ACCOUNT, codeValue(code))){
             generateBill(user.getUsername(), code, codeValue(code));
         }
         return true;

@@ -19,8 +19,8 @@ public class BankTransferService {
         String sourceUrl = buildUrl(sourceApiUrl, sourceAccountId, "withdraw", amount);
         String targetUrl = buildUrl(targetApiUrl, targetAccountId ,"deposit", amount);
 
-        restTemplate.put(sourceUrl, null); // Assuming no request body for simplicity
-        restTemplate.put(targetUrl, null); // Assuming no request body for simplicity
+        restTemplate.put(sourceUrl, null);
+        restTemplate.put(targetUrl, null);
     }
 
 }

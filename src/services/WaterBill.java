@@ -3,11 +3,11 @@ package services;
 import informations.User;
 
 public class WaterBill implements Bill{
-
-    String WATER_BILL_ACCOUNT = "CREATE ACCOUNT";
+    String WATER_BILL_ACCOUNT = "http://localhost:8001/api/bank/qnb/accounts";
+    String ACCOUNT_NUMBER = "3";
     @Override
     public boolean pay(User user, String code) {
-        if(user.getProvider().transfer(code, WATER_BILL_ACCOUNT, codeValue(code))){
+        if(user.getProvider().transfer(ACCOUNT_NUMBER, WATER_BILL_ACCOUNT, codeValue(code))){
             generateBill(user.getUsername(), code, codeValue(code));
             return true;
         }else{

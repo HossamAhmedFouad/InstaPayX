@@ -3,10 +3,11 @@ package services;
 import informations.User;
 
 public class ElectricityBill implements Bill{
-    String ELECTRICITY_BILL_ACCOUNT = "CREATE ACCOUNT";
+    String ELECTRICITY_BILL_ACCOUNT = "http://localhost:8001/api/bank/qnb/accounts";
+    String ACCOUNT_NUMBER = "1";
     @Override
     public boolean pay(User user, String code) {
-        if(user.getProvider().transfer(code, ELECTRICITY_BILL_ACCOUNT, codeValue(code))){
+        if(user.getProvider().transfer(ACCOUNT_NUMBER, ELECTRICITY_BILL_ACCOUNT, codeValue(code))){
             generateBill(user.getUsername(), code, codeValue(code));
             return true;
         }else{
@@ -29,5 +30,4 @@ public class ElectricityBill implements Bill{
         System.out.println("Amount:" + amount);
         System.out.println("*****************************************");
     }
-
 }

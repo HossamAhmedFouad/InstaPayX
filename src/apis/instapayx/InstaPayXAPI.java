@@ -15,6 +15,8 @@ public class InstaPayXAPI {
     private final List<UserDTO> bankAccounts = new ArrayList<>();
 
     public InstaPayXAPI() {
+        bankAccounts.add(new UserDTO("johnsamy","johnS@my1234","01128216266","http://localhost:8001/api/bank/hsbc/accounts","2"));
+        bankAccounts.add(new UserDTO("hossamfouad","Hoss@mfouad1234","01116535351","http://localhost:8001/api/bank/hsbc/accounts","1"));
 
     }
 
