@@ -1,7 +1,9 @@
 package providers;
 
 public interface Provider {
-    public boolean transfer();
-    public boolean verify();
-    public double getBalance();
+    boolean transfer(String receiver, String receiverName, double amount);
+    boolean verify();
+    double getBalance();
+    boolean withdraw(double amount);
+    boolean deposit(double amount);
 }

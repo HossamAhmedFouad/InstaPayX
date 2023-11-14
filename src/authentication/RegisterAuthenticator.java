@@ -8,8 +8,6 @@ import java.util.Scanner;
 public class RegisterAuthenticator implements Authenticator {
     private User user;
     private final OTPHandler otpHandler;
-    private String phone;
-
 
     public RegisterAuthenticator(User user, OTPHandler otpHandler) {
         this.user = user;
@@ -18,16 +16,16 @@ public class RegisterAuthenticator implements Authenticator {
 
     @Override
     public boolean verify() {
-        boolean isValidPhone = Validation.isValidPhone(phone);
+        boolean isValidPhone = Validation.isValidPhone(user.getPhone());
         if(!isValidPhone) {
             System.out.println("invalid phone number\n");
             return false;
         }
-        otpHandler.generateCode(phone);
+        otpHandler.generateCode(user.getPhone());
         System.out.println("Enter otp: \n");
         Scanner scanner = new Scanner(System.in);
         String otp = scanner.nextLine();
-        boolean isOtpValid = otpHandler.verifyCode(phone, otp);
+        boolean isOtpValid = otpHandler.verifyCode(user.getPhone(), otp);
 
         if (!isOtpValid) {
             System.out.println("Invalid otp\n");
@@ -36,8 +34,14 @@ public class RegisterAuthenticator implements Authenticator {
         boolean isUsernameValid = Validation.isValidUsername(user.getUsername());
         boolean isComplexPassword = Validation.isComplexPassword(user.getPassword());
 
-        return isUsernameValid && isComplexPassword;
+        if (!isUsernameValid){
+            System.out.println("User name invalid");
+            return false;
+        }
+        else if (!isComplexPassword){
+            System.out.println("not complex password");
+            return false;
+        }
+        return true;
     }
-
-
 }
