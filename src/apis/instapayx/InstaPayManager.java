@@ -1,9 +1,5 @@
 package apis.instapayx;
 
-import informations.User;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
@@ -35,14 +31,12 @@ public class InstaPayManager {
     }
     public boolean verify() {
         String apiUrl = baseUrl + "/" + username;
-        System.out.println("Username: " + username);
         UserDTO user = restTemplate.getForObject(apiUrl, UserDTO.class);
         return user != null && username.equals(user.getUsername()) && password.equals(user.getPassword());
     }
 
     public static String getProviderName(String username){
         String apiUrl = baseUrl + "/" + username;
-        System.out.println("Username: " + username);
         UserDTO user = restTemplate.getForObject(apiUrl, UserDTO.class);
         if(user != null){
             return user.getProviderName();
@@ -58,7 +52,6 @@ public class InstaPayManager {
 
     public static boolean exists(String username){
         String apiUrl = baseUrl + "/" + username;
-        System.out.println("Username: " + username);
         UserDTO user = restTemplate.getForObject(apiUrl, UserDTO.class);
         return user != null;
     }

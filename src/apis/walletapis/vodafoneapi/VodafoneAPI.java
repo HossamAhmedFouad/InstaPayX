@@ -5,7 +5,7 @@ import apis.walletapis.WalletAccount;
 import apis.walletapis.WalletDTO;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import transfering.WalletTransferService;
+import transfering.APITransferService;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,7 +15,6 @@ public class VodafoneAPI implements WalletAPI {
     private final List<WalletAccount> bankAccounts = new ArrayList<>();
 
     public VodafoneAPI() {
-        // Populate the in-memory database with some sample data
         bankAccounts.add(new WalletAccount("1", "Vodafone 1", 1605.0, "01116535351"));
         bankAccounts.add(new WalletAccount("2", "Vodafone 2", 2510.0, "01116535350"));
     }
@@ -26,7 +25,7 @@ public class VodafoneAPI implements WalletAPI {
                 return new WalletDTO(account.getPhone(), account.getBalance());
             }
         }
-        return null; // Return null or handle not found scenarios as needed
+        return null;
     }
 
     @GetMapping("/{phone}/balance")
@@ -36,7 +35,7 @@ public class VodafoneAPI implements WalletAPI {
                 return account.getBalance();
             }
         }
-        return Double.NaN; // Return null or handle not found scenarios as needed
+        return Double.NaN;
     }
 
     @PostMapping("/transfer-to")
@@ -46,7 +45,7 @@ public class VodafoneAPI implements WalletAPI {
             return ResponseEntity.badRequest().body("Invalid source account or insufficient balance");
         }
 
-        WalletTransferService.transferBetweenWallets(getApiUrl(), targetApiUrl, sourceAccountPhone, targetAccountPhone, amount);
+        APITransferService.transferBetweenAPIs(getApiUrl(), targetApiUrl, sourceAccountPhone, targetAccountPhone, amount);
 
         return ResponseEntity.ok("Balance transferred successfully");
     }

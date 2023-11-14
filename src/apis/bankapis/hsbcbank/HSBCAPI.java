@@ -5,17 +5,15 @@ import apis.bankapis.BankAccount;
 import apis.bankapis.BankDTO;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import transfering.BankTransferService;
-
+import transfering.APITransferService;
 import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/bank/hsbc/accounts") // Updated RequestMapping
+@RequestMapping("/api/bank/hsbc/accounts")
 public class HSBCAPI implements BankAPI {
     private final List<BankAccount> bankAccounts = new ArrayList<>();
     public HSBCAPI() {
-        // Populate the in-memory database with some sample data
         bankAccounts.add(new BankAccount("1", "hossamfouad", 1605.0, "01116535351"));
         bankAccounts.add(new BankAccount("2", "johnsamy", 2510.0, "01128216266"));
     }
@@ -27,7 +25,7 @@ public class HSBCAPI implements BankAPI {
                 return new BankDTO(account.getAccountId(), account.getPhone());
             }
         }
-        return null; // Return null or handle not found scenarios as needed
+        return null;
     }
 
     @GetMapping("/{accountId}/balance")
@@ -37,7 +35,7 @@ public class HSBCAPI implements BankAPI {
                 return account.getBalance();
             }
         }
-        return Double.NaN; // Return null or handle not found scenarios as needed
+        return Double.NaN;
     }
     @PostMapping("/transfer-to")
     public ResponseEntity<String> transferTo(@RequestParam String targetApiUrl, @RequestParam String sourceAccountId, @RequestParam String targetAccountId, @RequestParam double amount) {
@@ -46,7 +44,7 @@ public class HSBCAPI implements BankAPI {
             return ResponseEntity.badRequest().body("Invalid source account or insufficient balance");
         }
 
-        BankTransferService.transferBetweenBanks(getApiUrl(), targetApiUrl, sourceAccountId, targetAccountId, amount);
+        APITransferService.transferBetweenAPIs(getApiUrl(), targetApiUrl, sourceAccountId, targetAccountId, amount);
 
         return ResponseEntity.ok("Balance transferred successfully");
     }

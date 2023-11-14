@@ -4,7 +4,6 @@ public class BankDTO {
     private String accountNumber;
     private String phone;
     public BankDTO() {
-        // Default constructor needed for Jackson deserialization
     }
     public BankDTO(String accountNumber, String phone){
         this.accountNumber = accountNumber;

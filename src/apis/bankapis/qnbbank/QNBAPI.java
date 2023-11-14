@@ -5,7 +5,7 @@ import apis.bankapis.BankAccount;
 import apis.bankapis.BankDTO;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import transfering.BankTransferService;
+import transfering.APITransferService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +16,6 @@ public class QNBAPI implements BankAPI {
     private final List<BankAccount> bankAccounts = new ArrayList<>();
 
     public QNBAPI() {
-        // Populate the in-memory database with some sample data
         bankAccounts.add(new BankAccount("1", "ElectricityBill", 1000.0, "01116157934"));
         bankAccounts.add(new BankAccount("2", "GasBill", 2500.0, "01116781036"));
         bankAccounts.add(new BankAccount("3", "WaterBill", 2500.0, "01116012301"));
@@ -29,7 +28,7 @@ public class QNBAPI implements BankAPI {
             return ResponseEntity.badRequest().body("Invalid source account or insufficient balance");
         }
 
-        BankTransferService.transferBetweenBanks(getApiUrl(), targetApiUrl, sourceAccountId, targetAccountId, amount);
+        APITransferService.transferBetweenAPIs(getApiUrl(), targetApiUrl, sourceAccountId, targetAccountId, amount);
 
         return ResponseEntity.ok("Balance transferred successfully");
     }
@@ -70,7 +69,7 @@ public class QNBAPI implements BankAPI {
                 return account.getBalance();
             }
         }
-        return Double.NaN; // Return null or handle not found scenarios as needed
+        return Double.NaN;
     }
 
     public String getApiUrl() {

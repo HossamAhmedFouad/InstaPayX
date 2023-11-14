@@ -5,7 +5,8 @@ import apis.walletapis.WalletAccount;
 import apis.walletapis.WalletDTO;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import transfering.WalletTransferService;
+import transfering.APITransferService;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,7 +16,6 @@ public class EtisalatAPI implements WalletAPI {
     private final List<WalletAccount> bankAccounts = new ArrayList<>();
 
     public EtisalatAPI() {
-        // Populate the in-memory database with some sample data
         bankAccounts.add(new WalletAccount("1", "Tyson Kite Willington", 1605.0, "01116535351"));
         bankAccounts.add(new WalletAccount("2", "John Man Smith", 2510.0, "01116535351"));
     }
@@ -27,7 +27,7 @@ public class EtisalatAPI implements WalletAPI {
                 return new WalletDTO(account.getPhone(), account.getBalance());
             }
         }
-        return null; // Return null or handle not found scenarios as needed
+        return null;
     }
 
     @GetMapping("/{phone}/balance")
@@ -37,7 +37,7 @@ public class EtisalatAPI implements WalletAPI {
                 return account.getBalance();
             }
         }
-        return Double.NaN; // Return null or handle not found scenarios as needed
+        return Double.NaN;
     }
 
     @PostMapping("/transfer-to")
@@ -47,7 +47,7 @@ public class EtisalatAPI implements WalletAPI {
             return ResponseEntity.badRequest().body("Invalid source account or insufficient balance");
         }
 
-        WalletTransferService.transferBetweenWallets(getApiUrl(), targetApiUrl, sourceAccountPhone, targetAccountPhone, amount);
+        APITransferService.transferBetweenAPIs(getApiUrl(), targetApiUrl, sourceAccountPhone, targetAccountPhone, amount);
 
         return ResponseEntity.ok("Balance transferred successfully");
     }
@@ -82,8 +82,6 @@ public class EtisalatAPI implements WalletAPI {
     }
 
     public String getApiUrl() {
-        // Get the base URL of this API dynamically
-        // In a real-world scenario, you might have a configuration or discovery service
         return "http://localhost:8001/api/wallet/etisalat/accounts";
     }
 

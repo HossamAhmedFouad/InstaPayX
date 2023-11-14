@@ -86,7 +86,6 @@ public class Client {
     private boolean login(){
         System.out.println("Please Enter your InstapayX Username: ");
         String username = readLine();
-        System.out.println(username);
         System.out.println("Please Enter your Password: ");
         String password = readLine();
 

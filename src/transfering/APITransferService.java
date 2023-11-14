@@ -5,7 +5,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 @Service
-public class BankTransferService {
+public class APITransferService {
     private static final RestTemplate restTemplate = new RestTemplate();
     private static String buildUrl(String apiUrl, String accountId, String action, double amount) {
         UriComponentsBuilder builder = UriComponentsBuilder.fromUriString(apiUrl)
@@ -14,8 +14,7 @@ public class BankTransferService {
 
         return builder.buildAndExpand(accountId, action).toUriString();
     }
-    public static void transferBetweenBanks(String sourceApiUrl, String targetApiUrl, String sourceAccountId, String targetAccountId, double amount) {
-        // Simulate the transfer logic
+    public static void transferBetweenAPIs(String sourceApiUrl, String targetApiUrl, String sourceAccountId, String targetAccountId, double amount) {
         String sourceUrl = buildUrl(sourceApiUrl, sourceAccountId, "withdraw", amount);
         String targetUrl = buildUrl(targetApiUrl, targetAccountId ,"deposit", amount);
 

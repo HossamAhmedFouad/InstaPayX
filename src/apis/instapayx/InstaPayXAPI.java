@@ -1,16 +1,16 @@
 package apis.instapayx;
 
-import informations.User;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
-import transfering.InstaPayXTransferService;
+import transfering.APITransferService;
+
 import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/instapayx/accounts") // Updated RequestMapping
+@RequestMapping("/api/instapayx/accounts")
 public class InstaPayXAPI {
     private final List<UserDTO> bankAccounts = new ArrayList<>();
 
@@ -24,7 +24,6 @@ public class InstaPayXAPI {
     public UserDTO getAccount(@PathVariable String username) {
         for (UserDTO account : bankAccounts) {
             if (account.getUsername().equals(username)) {
-                System.out.println(account);
                 return account;
             }
         }
@@ -42,7 +41,7 @@ public class InstaPayXAPI {
         if(balance < amount){
             return ResponseEntity.badRequest().body("Insufficient Balance");
         }
-        InstaPayXTransferService.transferBetweenUsers(getApiUrl(), targetApiUrl, sourceAccountUser, targetAccountUser, amount);
+        APITransferService.transferBetweenAPIs(getApiUrl(), targetApiUrl, sourceAccountUser, targetAccountUser, amount);
 
         return ResponseEntity.ok("Balance transferred successfully");
     }
