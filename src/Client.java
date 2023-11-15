@@ -1,3 +1,6 @@
+import ClientRegister.BankRegister;
+import ClientRegister.RegisterTemplate;
+import ClientRegister.WalletRegister;
 import apis.Server;
 import apis.instapayx.InstaPayManager;
 import apis.instapayx.UserDTO;
@@ -125,71 +128,45 @@ public class Client {
         }
         System.out.println("Please Enter Password: ");
         String password = readLine();
-        String phone = null;
-        Provider provider = null;
-        String accountNumber = null;
-        String providerName = null;
-        String providerIdentifier = null;
+        RegisterTemplate register;
         int choice;
         System.out.println("Please Choose Provider\n1 - Bank Account\n2 - Wallet Account");
         choice = scanner.nextInt();
         if (choice == 1){
-            System.out.println("Please Enter Your Account Number: ");
-            accountNumber = readLine();
-            providerIdentifier = accountNumber;
-            System.out.println("Please Enter your Phone Number: ");
-            phone = readLine();
-            System.out.println("Please Choose Your Bank Provider");
-            availableBanks();
-            choice = scanner.nextInt();
-            if(choice == 1){
-                providerName = Banks.HSBC.getApiUrl();
-                provider = new BankProvider(new HSBCAPIStrategy(),accountNumber,phone);
-            }
-            if(choice == 2){
-                providerName = Banks.QNB.getApiUrl();
-                provider = new BankProvider(new QNBAPIStrategy(), accountNumber, phone);
-
-            }
+            register = new BankRegister(password,username,scanner);
         }else if(choice == 2){
-            System.out.println("Please Enter your phone number: ");
-            phone = readLine();
-            providerIdentifier = phone;
-            System.out.println("Please Choose Your Wallet Provider");
-            availableWallets();
-            choice = scanner.nextInt();
-            if(choice == 1){
-                providerName = Wallets.ETISALAT.getApiUrl();
-                provider = new WalletProvider(new EtisalatAPIStrategy(), phone);
-            }
-            if(choice == 2){
-                providerName = Wallets.VODAFONE.getApiUrl();
-                provider = new WalletProvider(new VodafoneAPIStrategy(), phone);
-            }
-        }
-
-        if(provider != null && provider.verify()){
-            System.out.println("Provider Has Been Validated !");
+            register = new WalletRegister(password,username,scanner);
         }else{
-            System.out.println("Invalid Credentials, please try again");
+            System.out.println("Invalid Choice");
             return false;
         }
-        OTPHandler otpHandler = new OTPHandler();
-        user = new User(username, password, phone);
-        authenticator = new RegisterAuthenticator(user, otpHandler);
-        if(authenticator.verify()){
-            System.out.println("Registration has been successful");
-            UserDTO userDTO = new UserDTO(username,password,phone,providerName,providerIdentifier);
-            InstaPayManager instaPayManager = new InstaPayManager(username,password);
-            instaPayManager.createAccount(userDTO);
-            user.setProvider(userDTO.getProvider());
-            return true;
-        }else{
-            System.out.println("Registration has stopped unsuccessfully");
-            return false;
-        }
+        user = register.getUser();
+        return user != null;
     }
-
+    private String getWalletTargetUrl(){
+        availableWallets();
+        int choice;
+        String targetUrl;
+        choice = scanner.nextInt();
+        if(choice == 1){
+            targetUrl = Wallets.ETISALAT.getApiUrl();
+        }else{
+            targetUrl = Wallets.VODAFONE.getApiUrl();
+        }
+        return targetUrl;
+    }
+    private String getBankTargetUrl(){
+        availableBanks();
+        int choice;
+        String targetUrl;
+        choice = scanner.nextInt();
+        if(choice == 1){
+            targetUrl = Banks.HSBC.getApiUrl();
+        }else{
+            targetUrl = Banks.QNB.getApiUrl();
+        }
+        return targetUrl;
+    }
     private boolean transferMoney(){
         System.out.println("Please Select Your Transferring Method: ");
         System.out.println("1 - Via your provider");
@@ -204,24 +181,12 @@ public class Client {
                 scanner.nextLine();
                 receiverID = readLine();
                 System.out.println("Please Choose The Bank Provider: ");
-                availableBanks();
-                choice = scanner.nextInt();
-                if(choice == 1){
-                    targetUrl = Banks.HSBC.getApiUrl();
-                }else{
-                    targetUrl = Banks.QNB.getApiUrl();
-                }
+                targetUrl = getBankTargetUrl();
             }else{
                 System.out.println("Please Enter Phone Number: ");
                 receiverID = readLine();
                 System.out.println("Please Choose The Wallet Provider: ");
-                availableWallets();
-                choice = scanner.nextInt();
-                if(choice == 1){
-                    targetUrl = Wallets.ETISALAT.getApiUrl();
-                }else{
-                    targetUrl = Wallets.VODAFONE.getApiUrl();
-                }
+                targetUrl = getWalletTargetUrl();
             }
             System.out.println("Please Enter Amount To Transfer: ");
             double amount = Double.parseDouble(scanner.next());
